@@ -19,3 +19,4 @@ for i in range(1,10):
     main_site_links='https://keikolynn.com/category/style/shopping-guides/page/'+str(i)+'/'
     main_site_data = crawling(main_site_links)
     print(main_site_data)
+    print('a')
