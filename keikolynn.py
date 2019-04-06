@@ -1,10 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 import time
+import random
 
 time1 = time.time()
+exist_url = []
 
-#basic crawling function
+# basic crawling function
 def crawling(link):
     try:
         headers = {
@@ -13,9 +15,14 @@ def crawling(link):
         html_data = BeautifulSoup(r.text, 'lxml')
         return html_data
     except Exception as e:
-        print('该地址下载失败: ', url)
+        print('该地址下载失败: ', link)
         print(e)
-for i in range(1,10):
-    main_site_links='https://keikolynn.com/category/style/shopping-guides/page/'+str(i)+'/'
+        exist_url.append(link)
+
+
+# crawling first 10 pages
+for i in range(1, 10):
+    main_site_links = 'https://keikolynn.com/category/style/shopping-guides/page/' + str(i) + '/'
     main_site_data = crawling(main_site_links)
-    print(main_site_data)
+    sleep_time = random.randint(0, 2) + random.random()
+    time.sleep(sleep_time)
