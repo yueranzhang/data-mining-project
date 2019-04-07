@@ -5,8 +5,8 @@ import random
 import re
 
 time1 = time.time()
-
-
+set_name_list = []
+set_link_list = []
 # basic crawling function
 def crawling(link):
     try:
@@ -22,28 +22,29 @@ def crawling(link):
 
 
 # crawling first n pages
-def crawling_pages(n):
+def get_sets(n):
     for i in range(1, n):
         main_site_link = 'https://keikolynn.com/category/style/shopping-guides/page/' + str(i) + '/'
         main_site_data = crawling(main_site_link)[1]
-        sleep_time = random.randint(0, 2) + random.random()
-        time.sleep(sleep_time)
 
         # get individual names from shopping guides
-        setting_names = main_site_data.findall("h2", class_="page-title")
-        set_name_list = []
+        setting_names = main_site_data.find_all("h2", class_="page-title")
         for i in range(len(setting_names)):
-            set_name = print(setting_names[i]).a.text
+            set_name = setting_names[i].a
             set_name_list.append(set_name)
-            print(set_name)
 
         # get individual links from shopping guides
         html = crawling(main_site_link)[0]
-        set_link_list = re.findall('<h2 class="page-title"><a href="https://keikolynn.com/([^:#=<>]*?)".*?</a></h2>',
+        set_link = re.findall('<h2 class="page-title"><a href="(https://keikolynn.com/[^:#=<>]*?)".*?</a></h2>',
                                    html)
-        print(set_link_list)
-
+        set_link_list.append(set_link)
         # crawling each links in the link list
-        
 
-crawling_pages(2)
+        #sleep
+        sleep_time = random.randint(0, 2) + random.random()
+        time.sleep(sleep_time)
+
+
+get_sets(5)
+print(set_name_list)
+print(set_link_list)
