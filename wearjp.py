@@ -23,8 +23,8 @@ def crawling(link):
 
 
 # crawling first n pages
-def get_sets(n):
-    for i in range(1, n):
+def get_sets(pages):
+    for i in range(1, pages):
         main_site_link = 'https://wear.jp/coordinate/?pageno=' + str(i)
         main_site_data = crawling(main_site_link)[1]
 
@@ -33,15 +33,25 @@ def get_sets(n):
         for set_div in set_divs:
             set_link_text = set_div.find_all(name="a")
             set_links = [l['href'] for l in set_link_text]
-            set_link_list.append(["https://wear.jp" + set_link for set_link in set_links])
+            for set_link1 in set_links:
+                set_link = "https://wear.jp" + set_link1
+                set_link_list.append(set_link)
 
         # sleep
         sleep_time = random.randint(0, 1)
         time.sleep(sleep_time)
 
+#get pics from web pages and save
+def get_pic(link):
+    set_data = crawling(link)[1]
+    sections = set_data.find_all(name = "section", attrs={"id": "item", "class": "content_bg"})
+    for section in sections:
+        print(section)
+
 
 get_sets(2)
 time2 = time.time()
 total_time = time2 - time1
-print(set_link_list)
 print(total_time)
+for set_link in set_link_list:
+   get_pic(set_link)
