@@ -41,17 +41,26 @@ def get_sets(pages):
         sleep_time = random.randint(0, 1)
         time.sleep(sleep_time)
 
-#get pics from web pages and save
+
+# get pics from web pages and save
 def get_pic(link):
+    img_set = []
     set_data = crawling(link)[1]
-    sections = set_data.find_all(name = "section", attrs={"id": "item", "class": "content_bg"})
-    for section in sections:
-        print(section)
+    section = set_data.find(name="section", attrs={"id": "item", "class": "content_bg"})
+    img = section.find_all(name="img")
+    for i in img:
+        img_address = i['src']
+        img_set.append(img_address)
+    return img_set
 
 
 get_sets(2)
 time2 = time.time()
 total_time = time2 - time1
 print(total_time)
+pic_set = {}
+i = 0
 for set_link in set_link_list:
-   get_pic(set_link)
+    pic_set[i] = get_pic(set_link)
+    i += 1
+print(pic_set)
