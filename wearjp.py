@@ -5,8 +5,6 @@ import random
 import os
 
 
-time1 = time.time()
-set_link_list = []
 
 # basic crawling function
 def crawling(link):
@@ -38,11 +36,11 @@ def get_sets(n):
                 set_link = "https://wear.jp" + set_link1
                 set_link_list.append(set_link)
 
-
         # sleep
         sleep_time = random.randint(0, 1) + random.random()
         time.sleep(sleep_time)
 
+# get pics from set_link_list and return image link
 def get_pic(link):
     img_set = []
     set_data = crawling(link)[1]
@@ -53,6 +51,7 @@ def get_pic(link):
         img_set.append(img_address)
     return img_set
 
+
 def save_pic(link):
     for each in link:
         filename = each.split('/')[-1]
@@ -60,23 +59,25 @@ def save_pic(link):
         with open(filename, 'wb')as f:
             f.write(img)
 
+# save pics in to folders
 def download_pic(link, page_num):
-    page = str(page_num)
-    folder = page
+    folder = str(page_num)
     os.mkdir(folder)
     os.chdir(folder)
 
     save_pic(link)
     os.chdir('..')
 
+
 if __name__ == "__main__":
+    time1 = time.time()
+    set_link_list = []
     get_sets(3)
     time2 = time.time()
     total_time = time2 - time1
-    print(set_link_list)
     print(total_time)
-    page_num = 0
+    set_num = 0
     for add in set_link_list:
-        page_num += 1
+        set_num += 1
         i = get_pic(add)
-        download_pic(i, page_num)
+        download_pic(i, set_num)
