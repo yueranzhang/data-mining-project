@@ -9,7 +9,6 @@ from bs4 import BeautifulSoup
 class Crawling():
     def __init__(self, n):
         self.set_link_list = []
-        self.img_set = []
         self.n = n
 
     # basic crawling function
@@ -49,6 +48,7 @@ class Crawling():
     # get pics from set_link_list and return image link
     def get_pic(self, link):
         self.link = link
+        self.img_set = []
         set_data = self.crawling(self.link)[1]
         section = set_data.find(name="section", attrs={"id": "item", "class": "content_bg"})
         img = section.find_all(name="img")
@@ -77,13 +77,4 @@ class Crawling():
         os.chdir('..')
 
 
-if __name__ == "__main__":
-    data = Crawling(4)
-    data.get_sets()
-    set_num = 0
-    print(data.set_link_list)
-    print(data.img_set)
-    for add in data.set_link_list:
-        set_num += 1
-        i = data.get_pic(add)
-        data.download_pic(i, set_num)
+
