@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 class Crawling():
     def __init__(self, n):
         self.set_link_list = []
+        self.img_set = []
         self.n = n
 
     # basic crawling function
@@ -48,14 +49,13 @@ class Crawling():
     # get pics from set_link_list and return image link
     def get_pic(self, link):
         self.link = link
-        img_set = []
         set_data = self.crawling(self.link)[1]
         section = set_data.find(name="section", attrs={"id": "item", "class": "content_bg"})
         img = section.find_all(name="img")
         for i in img:
             img_address = 'http:' + i['src']
-            img_set.append(img_address)
-        return img_set
+            self.img_set.append(img_address)
+        return self.img_set
 
     def save_pic(self, link):
         self.link = link
@@ -66,10 +66,10 @@ class Crawling():
                 f.write(img)
 
     # save pics in to folders
-    def download_pic(self, link, page_num):
+    def download_pic(self, link, set_num):
         self.link = link
-        self.page_num = page_num
-        folder = str(self.page_num)
+        self.set_num = set_num
+        folder = str(self.set_num)
         os.mkdir(folder)
         os.chdir(folder)
 
@@ -78,12 +78,11 @@ class Crawling():
 
 
 if __name__ == "__main__":
-    time1 = time.time()
-    data = Crawling(3)
-    time2 = time.time()
-    total_time = time2 - time1
-    print(total_time)
+    data = Crawling(4)
+    data.get_sets()
     set_num = 0
+    print(data.set_link_list)
+    print(data.img_set)
     for add in data.set_link_list:
         set_num += 1
         i = data.get_pic(add)
