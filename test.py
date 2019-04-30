@@ -5,8 +5,6 @@ import random
 import os
 
 
-time1 = time.time()
-set_link_list = []
 
 # basic crawling function
 def crawling(link):
@@ -25,7 +23,8 @@ def crawling(link):
 
 # crawling first n pages
 def get_sets(n):
-    for i in range(1, n):
+    set_link_list = []
+    for i in range(1, n+1):
         main_site_link = 'https://wear.jp/coordinate/?pageno=' + str(i)
         main_site_data = crawling(main_site_link)[1]
 
@@ -38,10 +37,10 @@ def get_sets(n):
                 set_link = "https://wear.jp" + set_link1
                 set_link_list.append(set_link)
 
-
         # sleep
         sleep_time = random.randint(0, 1) + random.random()
         time.sleep(sleep_time)
+        return set_link_list
 # 图片地址及对应购买网址
 def get_pic(link):
     img_set = []
@@ -87,23 +86,24 @@ if __name__ == "__main__":
     pic_list = []
     shop_list = []
 
-    get_sets(2)
-    time2 = time.time()
-    total_time = time2 - time1
-#    print(set_link_list)
-# 合并图片名称为一个列表
+    set_link_list = get_sets(1)
+    print(set_link_list)
+
+    page_num = 0
     for count in set_link_list:
+        page_num += 1
         i = get_pic(count)
+        download_pic(i, page_num)
         for each in i:
             name = each.split('/')[-1]
             print(name, '\n')
             pic_list.append(name)
-# 合并购物网址为一个列表
+
     for count in set_link_list:
         i = get_shopadd(count)
         print(i,'\n')
         shop_list.extend(i)
-#字典 key:图片名 value: 购物网址
+
     info = {}.fromkeys(pic_list)
     i = 0
     for key, value in info.items():
