@@ -41,7 +41,7 @@ def get_sets(n):
         sleep_time = random.randint(0, 1) + random.random()
         time.sleep(sleep_time)
         return set_link_list
-# 图片地址及对应购买网址
+#  pic address and purchasing address
 def get_pic(link):
     img_set = []
     set_data = crawling(link)[1]
