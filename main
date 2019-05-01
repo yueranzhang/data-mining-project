@@ -1,26 +1,27 @@
+import wearjp
 
-import wear_jp
 
-def main():
+def main(page_num):
     pic_list = []
     shop_list = []
-    set_link_list = wear_jp.get_sets(1)
-
-    page_num = 0
+    # 生成set link list
+    set_link_list = wearjp.get_sets(page_num)
+    # 从每个set link中抓取图片并保存
+    set_num = 0
     for count in set_link_list:
-        page_num += 1
-        i = wear_jp.get_pic(count)
-        wear_jp.download_pic(i, page_num)
+        set_num += 1
+        i = wearjp.get_pic(count)
+        wearjp.download_pic(i, set_num)
         for each in i:
             name = each.split('/')[-1]
             print(name, '\n')
             pic_list.append(name)
-
+    # 从每个set link中抓取shop list
     for count in set_link_list:
-        i = wear_jp.get_shopadd(count)
+        i = wearjp.get_shopadd(count)
         print(i, '\n')
         shop_list.extend(i)
-
+    # 生成对应的dic
     info = {}.fromkeys(pic_list)
     i = 0
     for key, value in info.items():
@@ -29,5 +30,6 @@ def main():
 
     print(info)
 
+
 if __name__ == "__main__":
-    main()
+    main(1)
