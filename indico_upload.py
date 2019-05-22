@@ -6,19 +6,7 @@ from indicoio.custom import Collection
 indicoio.config.api_key = 'bb2ce29a2086bceb98bc297f6a961656'
 
 def generate_training_data(fname):
-    """
-    Read in text file and generate training data.
-    Each line looks like the following:
 
-    1050: [1, 2, 3, 4, 5]
-    1349: [1, 2, 3, 4, 5]
-    4160: [1, 2, 3]
-    ...
-
-    First we split on the colon of each row, where the first
-    half is the image filename and the second half is its
-    associated labels.
-    """
     with open(fname) as f:
         for line in f:
             shirt, targets = line.split(":")
@@ -35,7 +23,7 @@ def generate_training_data(fname):
 
 
 if __name__ == "__main__":
-    collection = Collection("clothes_collection_1")
+    collection = Collection("clothes_collection_2")
 
     # Clear any previous changes
     try:
@@ -54,9 +42,9 @@ if __name__ == "__main__":
 
     collection.train()
     collection.wait()
-    img = cv.imread("test_shirts/12770.jpg")
+    img = cv.imread("test.jpg")
 
-    collection = Collection("clothes_collection_1")
+    collection = Collection("clothes_collection_2")
     predict = collection.predict(img)
     outcome = max(predict, key=predict.get)
-    print(outcome)
+    print(outcome[5:])
