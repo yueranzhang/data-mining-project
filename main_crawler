@@ -32,4 +32,4 @@ def main(page_num):
 
 
 if __name__ == "__main__":
-    main(1)
+    main(10)
